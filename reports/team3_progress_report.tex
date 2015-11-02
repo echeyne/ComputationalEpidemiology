@@ -1,0 +1,106 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+
+% This is a simple template for a LaTeX document using the "article" class.
+% See "book", "report", "letter" for other types of document.
+
+\documentclass[12pt, oneside, openany]{article} % use larger type; default would be 10pt
+
+\usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
+
+%%% Examples of Article customizations
+% These packages are optional, depending whether you want the features they provide.
+% See the LaTeX Companion or other references for full information.
+
+%%% PAGE DIMENSIONS
+\usepackage{geometry} % to change the page dimensions
+\geometry{letterpaper} % or letterpaper (US) or a5paper or....
+% \geometry{margin=2in} % for example, change the margins to 2 inches all round
+% \geometry{landscape} % set up the page for landscape
+%   read geometry.pdf for detailed page layout information
+
+\usepackage{graphicx} % support the \includegraphics command and options
+
+\usepackage[titletoc,toc,title]{appendix}
+
+% \usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
+
+%%% PACKAGES
+\usepackage{booktabs} % for much better looking tables
+\usepackage{array} % for better arrays (eg matrices) in maths
+\usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
+\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
+\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
+%\usepackage{forest} % Used for creating tree diagrams
+\usepackage{color}
+\usepackage{longtable}
+\usepackage{amsmath}
+% These packages are all incorporated in the memoir class to one degree or another...
+
+%%% HEADERS & FOOTERS
+\usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
+\pagestyle{fancy} % options: empty , plain , fancy
+\renewcommand{\headrulewidth}{0pt} % customise the layout...
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+
+%%% SECTION TITLE APPEARANCE
+\usepackage{sectsty}
+%\allsectionsfont{\sffamily\mdseries\upshape} % (See the fntguide.pdf for font help)
+% (This matches ConTeXt defaults)
+
+%%% ToC (table of contents) APPEARANCE
+\usepackage[nottoc,notlof,notlot]{tocbibind} % Put the bibliography in the ToC
+\usepackage[titles,subfigure]{tocloft} % Alter the style of the Table of Contents
+\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
+
+\usepackage{listings}
+%\usepackage{minted}
+
+%%% END Article customizations
+
+\hyphenation{releaseNameAddressPhoneToThirdParty}
+
+\begin{document}
+\input{title_page.tex}
+\tableofcontents
+\newpage
+
+%%% Article Summary %%%
+\section{Overview of \textit{Computational Epidemiology} as it Relates to our Project}
+An epidemic can be characterized as a widespread occurrence of an illness or other health-related event at a particular time whereas a pandemic is an epidemic of worldwide proportions. Due to emerging global trends of increases denser urbanization, more local and global travel, and a generally older population controlling and responding to future epidemics and possibly pandemics will become significantly more challenging. However, advances in computing, big data, and computational thinking have created new opportunities to support and possibly prevent the spread of infections disease. Computation specifically plays a very important role in supporting real-time epidemiology because controlled experiments used to understand the spread of disease are much harder to perform and often all together impossible due to ethical constraints. 
+
+In 1760 Daniel Bernoulli developed the first mathematical model in epidemiology. Using his model Bernoulli established that vaccination could help increase the life expectancy in the French population. Presently, the simplest and commonly used model to demonstrate epidemic processes is the SIR model. In this model a population of size \textit{N} is divided into three states: susceptible (\textit{S}), infective (\textit{I}), and removed or recovered (\textit{R}). Each infected person can infect any susceptible person (independently) with probability \( \beta\) and can recover with probability \(\gamma\). Let \textit{S(t)}, \textit{I(t)}, and \textit{R(t)} represented the number of people that are in either susceptible, infected, or removed states at a given time \textit{t}. Furthermore let \( s(t) = \frac{S(t)}{N} \), \( i(t) = \frac{I(t)}{N} \), and \( r(t) = \frac{R(t)}{N} \) then, \( s(t) + i(t) + r(t) = 1 \). 
+
+Using the complete mixing requirement which assumes that every person is in contact with everyone in the population, the following system of differential equations that represent the SIR model can describe the dynamics of the model:
+
+\begin{equation}
+	\frac{ds(t)}{dt} = - \beta s(t) i(t)
+\end{equation}
+
+\begin{equation}
+	\frac{di(t)}{dt} = \beta s(t) i(t) - \gamma i(t)
+\end{equation}
+
+\begin{equation}
+	\frac{dr(t)}{dt} = \gamma i(t)
+\end{equation}
+
+A common use for the SIR model is to determine the likelihood of an epidemic infecting a large fraction of the population. According to the SIR model a large scale infection will occur if and only if \( R_{0} = \frac{\beta}{\gamma} > 0 \). \(R_{0}\) represents the \textit{reproductive number}. Public health decision making is often very concerned with controlling \(R_{0}\).
+
+The SIR model makes many assumptions, of those the most significant is the complete mixing requirements which is often unrealistic. A more recent approach to understand the spread of an epidemic is \textit{networked epidemiology}. Networked epidemiology seeks to understand the interactions between three, distinct components of epidemiology: individual behaviours of agents, unstructured; heterogeneous multi-scale networks; and the dynamical processes on these networks. This type of analysis is focused on the belief that a better understanding of the underlying network and individual behaviours within the network will provide better insights into contagion dynamics and response strategies. 
+
+To apply this network model let \textit{G(V, E)} denote a contact graph on a population \textit{V}. Each edge \( e=(u,v) \exists E \) denotes that individuals (or nodes) \(u, v \exists V \) come into contact. Additionally, let \textit{N(v)} denote a set of neighbours of \textit{v}. Applying the SIR model to \textit{G} a node is in either a \textit{S}, \textit{I}, or \textit{R} state. For each \textit{u}, \textit{v} pair infection can potentially spread along edge \textit{e = (u, v)} with probability of \( \beta(e,t) \) at time \textit{t} after \textit{u} becomes infected. This probability is conditional on node \textit{v} remaining susceptible until time \textit{t}. 
+
+%%% Project Description %%%
+\section{Project Description}
+Using the modelling methods discussed by Marathe and Vullikani we will analyze the following datasets ....
+
+Some of our analysis may include ...
+
+\newpage
+\begin{thebibliography}{1}
+ \bibitem{marathe} M. Marathe and A. Vullikanti. Computational Epidemiology. Communications of the ACM, 56(7):88-99, 2013. \end{thebibliography}
+
+\end{document}
