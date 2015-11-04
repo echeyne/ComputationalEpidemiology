@@ -58,6 +58,9 @@
 \usepackage{listings}
 %\usepackage{minted}
 
+\newcommand{\deriv}[2]{\frac{\mathrm d #1}{\mathrm d #2}}
+\newcommand{\pderiv}[2]{\frac{\partial #1}{\partial #2}}
+
 %%% END Article customizations
 
 \hyphenation{releaseNameAddressPhoneToThirdParty}
@@ -69,33 +72,27 @@
 
 %%% Article Summary %%%
 \section{Overview of \textit{Computational Epidemiology} as it Relates to our Project}
-An epidemic can be characterized as a widespread occurrence of an illness or other health-related event at a particular time whereas a pandemic is an epidemic of worldwide proportions. Due to emerging global trends of increases denser urbanization, more local and global travel, and a generally older population controlling and responding to future epidemics and possibly pandemics will become significantly more challenging. However, advances in computing, big data, and computational thinking have created new opportunities to support and possibly prevent the spread of infections disease. Computation specifically plays a very important role in supporting real-time epidemiology because controlled experiments used to understand the spread of disease are much harder to perform and often all together impossible due to ethical constraints. 
+An epidemic can be characterized as a widespread occurrence of an illness or other health-related event at a particular time; a pandemic is an epidemic of worldwide proportions. Due to emerging global trends of increasingly dense urbanization, more local and global travel, and a generally older population, controlling and responding to future epidemics and possibly pandemics will become significantly more challenging. However, advances in computing, big data, and computational thinking have created new opportunities to control and prevent the spread of infections disease. Computation plays a pivotal role in supporting real-time epidemiology because using controlled experiments to understand the spread of disease is much harder to perform than computer modeling, and often experiments are impossible due to ethical constraints. 
 
-In 1760 Daniel Bernoulli developed the first mathematical model in epidemiology. Using his model Bernoulli established that vaccination could help increase the life expectancy in the French population. Presently, the simplest and commonly used model to demonstrate epidemic processes is the SIR model. In this model a population of size \textit{N} is divided into three states: susceptible (\textit{S}), infective (\textit{I}), and removed or recovered (\textit{R}). Each infected person can infect any susceptible person (independently) with probability \( \beta\) and can recover with probability \(\gamma\). Let \textit{S(t)}, \textit{I(t)}, and \textit{R(t)} represented the number of people that are in either susceptible, infected, or removed states at a given time \textit{t}. Furthermore let \( s(t) = \frac{S(t)}{N} \), \( i(t) = \frac{I(t)}{N} \), and \( r(t) = \frac{R(t)}{N} \) then, \( s(t) + i(t) + r(t) = 1 \). 
+In 1760 Daniel Bernoulli developed the first mathematical model in epidemiology. Using his model, Bernoulli established that vaccination could help increase the life expectancy in the French population. Presently, the simplest and most commonly used model to demonstrate epidemic processes is the \emph{SIR} model. In this model a population of size $N$ is divided into three states: susceptible ($S$), infective ($I$), and removed or recovered ($R$). Each infected person can infect any susceptible person (independently) with probability $\beta$ and can recover with probability $\gamma$. Let $S(t)$, $I(t)$, and $R(t)$ represent the number of people that are in either the susceptible, infected, or removed states at a given time $t$. Furthermore let $s(t) = \frac{S(t)}{N}$, $i(t) = \frac{I(t)}{N}$, and $r(t) = \frac{R(t)}{N}$. (i.e. the fractions of the population in each of the states.) And it follows that: $s(t) + i(t) + r(t) = 1$. 
 
-Using the complete mixing requirement which assumes that every person is in contact with everyone in the population, the following system of differential equations that represent the SIR model can describe the dynamics of the model:
+Using the complete mixing requirement which assumes that every person is in contact with everyone in the population, the following system of differential equations describe the dynamics of the SIR model:
 
-\begin{equation}
-	\frac{ds(t)}{dt} = - \beta s(t) i(t)
-\end{equation}
+\begin{align}
+	\deriv{s(t)}{t} &= -\beta s(t) i(t) \\
+	\deriv{i(t)}{t} &= \beta s(t) i(t) - \gamma i(t) \\
+	\deriv{r(t)}{t} &= \gamma i(t)
+\end{align}
 
-\begin{equation}
-	\frac{di(t)}{dt} = \beta s(t) i(t) - \gamma i(t)
-\end{equation}
+A common use for the SIR model is to determine the likelihood of an epidemic infecting a large fraction of the population. According to the SIR model a large scale infection will occur if and only if $R_{0} = \frac{\beta}{\gamma} > 0 $, where $R_{0}$ is the \textit{reproductive number}. Public health decision making is often very concerned with controlling $R_{0}$.
 
-\begin{equation}
-	\frac{dr(t)}{dt} = \gamma i(t)
-\end{equation}
+The SIR model makes many assumptions, the most significant of which is the complete mixing requirements which is often unrealistic. A more recent approach to understand the spread of an epidemic is \textit{networked epidemiology}. Networked epidemiology seeks to understand the interactions between three, distinct components of epidemiology: individual behaviors of agents; unstructured, heterogeneous multi-scale networks; and the dynamical processes on these networks. This type of analysis is focused on the belief that a better understanding of the underlying network and individual behaviors within the network will provide better insights into contagion dynamics and response strategies. 
 
-A common use for the SIR model is to determine the likelihood of an epidemic infecting a large fraction of the population. According to the SIR model a large scale infection will occur if and only if \( R_{0} = \frac{\beta}{\gamma} > 0 \). \(R_{0}\) represents the \textit{reproductive number}. Public health decision making is often very concerned with controlling \(R_{0}\).
-
-The SIR model makes many assumptions, of those the most significant is the complete mixing requirements which is often unrealistic. A more recent approach to understand the spread of an epidemic is \textit{networked epidemiology}. Networked epidemiology seeks to understand the interactions between three, distinct components of epidemiology: individual behaviours of agents, unstructured; heterogeneous multi-scale networks; and the dynamical processes on these networks. This type of analysis is focused on the belief that a better understanding of the underlying network and individual behaviours within the network will provide better insights into contagion dynamics and response strategies. 
-
-To apply this network model let \textit{G(V, E)} denote a contact graph on a population \textit{V}. Each edge \( e=(u,v) \exists E \) denotes that individuals (or nodes) \(u, v \exists V \) come into contact. Additionally, let \textit{N(v)} denote a set of neighbours of \textit{v}. Applying the SIR model to \textit{G} a node is in either a \textit{S}, \textit{I}, or \textit{R} state. For each \textit{u}, \textit{v} pair infection can potentially spread along edge \textit{e = (u, v)} with probability of \( \beta(e,t) \) at time \textit{t} after \textit{u} becomes infected. This probability is conditional on node \textit{v} remaining susceptible until time \textit{t}. 
+To apply this network model, let $G(V, E)$ denote a contact graph on a population, where $V$ is the set of people in the population and $E$ is the set of contact pairs in the population (i.e. $\{u,v\}\in E~ \mathrm{iff}~u,v\in V~\mathrm{and}~u,v$ have come into contact with each other). Additionally, let $N(v)$ denote a set of neighbors of $v$. Applying the SIR model to $G$, a node is in either a $S$, $I$, or $R$ state. For each $\{u,v\}$ pair, infection can potentially spread along edge $e = \{u, v\}$ with probability of $ \beta(e,t) $ at time $t$ after $u$ becomes infected. This probability is conditional on node $v$ remaining susceptible until time $t$.~\cite{marathe} 
 
 %%% Project Description %%%
 \section{Project Description}
-Using the modelling methods discussed by Marathe and Vullikani we will analyze the following datasets ....
+Using the modeling methods discussed by Marathe and Vullikani we will analyze the following datasets ....
 
 Some of our analysis may include ...
 
