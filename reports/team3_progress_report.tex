@@ -86,7 +86,7 @@ Using the complete mixing requirement which assumes that every person is in cont
 
 A common use for the SIR model is to determine the likelihood of an epidemic infecting a large fraction of the population. According to the SIR model, a large scale infection will occur if and only if $R_{0} = \frac{\beta}{\gamma} > 0 $, where $R_{0}$ is the \textit{reproductive number}. Public health decision making is often very concerned with controlling $R_{0}$.
 
-The SIR model makes many assumptions, the most significant of which is the complete mixing requirements which is often unrealistic. A more recent approach to understand the spread of an epidemic is \textit{networked epidemiology}. Networked epidemiology seeks to understand the interactions between three, distinct components of epidemiology: individual behaviors of agents; unstructured, heterogeneous multi-scale networks; and the dynamical processes on these networks. This type of analysis is focused on the belief that a better understanding of the underlying network and individual behaviors within the network will provide better insights into contagion dynamics and response strategies. 
+The SIR model makes many assumptions, the most significant of which is the complete mixing requirement which is often unrealistic. A more recent approach to understand the spread of an epidemic is \textit{networked epidemiology}. Networked epidemiology seeks to understand the interactions between three distinct components of epidemiology: individual behaviors of agents; unstructured, heterogeneous multi-scale networks; and the dynamical processes on these networks. This type of analysis is focused on the belief that a better understanding of the underlying network and individual behaviors within the network will provide better insights into contagion dynamics and response strategies. 
 
 To apply this network model, let $G(V, E)$ denote a contact graph on a population, where $V$ is the set of people in the population and $E$ is the set of contact pairs in the population (i.e. $\{u,v\}\in E~ \mathrm{iff}~u,v\in V~\mathrm{and}~u,v$ have come into contact with each other). Additionally, let $N(v)$ denote a set of neighbors of $v$. Applying the SIR model to $G$, a node is in either a $S$, $I$, or $R$ state. For each $\{u,v\}$ pair, infection can potentially spread along edge $e = \{u, v\}$ with probability of $ \beta(e,t) $ at time $t$ after $u$ becomes infected. This probability is conditional on node $v$ remaining susceptible until time $t$.~\cite{marathe} 
 
@@ -99,17 +99,17 @@ It has been well studied that the adoption of new ideas, norms, behaviors, and p
 \subsection{Graph Properties of Diffusion Networks}
 Using real technology diffusion networks we will examine a variety of graph properties including the degree distribution, transitivity, clustering, centrality, and community structure.
 
-When examining the degree distribution we hope to find that it follows a power law and that the network is scale-free; this would agree with the existing literature. Due to the scale-free nature of the graphs, we expect to observe hubs which are highly connected and have high centrality.
+After examining the degree distribution we hope to find that it follows a power law and that the network is scale-free, thus agreeing with existing research. Due to the scale-free nature of the graphs, we expect to observe hubs which are highly connected and have high centrality.
 
-We expect the clustering coefficients and the transitivity of the networks to be relatively low due to the way that the technology diffuses through the network: certain nodes will be highly connected to other nodes if they adopted the technology early on, but the peripheral nodes around the highly connected nodes will not be connected to each other, and thus not form triangles, due to the fact that two nodes that have already adopted cannot influence each other.
+We expect the clustering coefficients and the transitivity of the networks to be relatively low because of the way technology diffuses through a network. It is expected that the nodes that adopted the technology early on will be highly connected to other nodes. However, the peripheral nodes around the highly connected nodes will not be connected to each other and thus not form triangles because two nodes that have already adopted the technology cannot influence one another.
 
 \subsection{Diffusion on Different Graph Classes}
-In addition to the investigation outlined above, we would like to investigate how the structure of a graph affects the rate and shape of the diffusion through the network. To do this we will generate random graphs according to some random graph models (e.g. Erdős–Rényi, Barbassi-Albert, etc...), and simulate diffusion through the network by applying a simple SIR model to the random graph. We hope to see significant differences in the resulting transmission network on the different graph classes.
+In addition to the investigation outlined above we would like to investigate how the structure of a graph affects the rate and shape of the diffusion through the network. To do this we will generate random graphs according to some random graph models (e.g. Erdős–Rényi, Barbassi-Albert, etc), and simulate diffusion through the network by applying a simple SIR model to the random graph. We hope to see significant differences in the resulting transmission network on the different graph classes.
 
 \section{Sample Data Set}
 We were able to find a comprehensive data set of information diffusion from ``The Anatomy of a Scientific Rumor'' by Domenico et al.~\cite{domenico}. They tracked the information spreading process across Twitter after the announcement of the Higgs boson on July 4th, 2012.
 
-The data from the article is available here:
+The data from the article is available at
 https://snap.stanford.edu/data/higgs-twitter.html
 
 \newpage
