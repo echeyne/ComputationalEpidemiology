@@ -1,0 +1,126 @@
+
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+
+% This is a simple template for a LaTeX document using the "article" class.
+% See "book", "report", "letter" for other types of document.
+
+\documentclass[12pt, oneside, openany]{article} % use larger type; default would be 10pt
+
+\usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
+
+%%% Examples of Article customizations
+% These packages are optional, depending whether you want the features they provide.
+% See the LaTeX Companion or other references for full information.
+
+%%% PAGE DIMENSIONS
+\usepackage{geometry} % to change the page dimensions
+\geometry{letterpaper} % or letterpaper (US) or a5paper or....
+% \geometry{margin=2in} % for example, change the margins to 2 inches all round
+% \geometry{landscape} % set up the page for landscape
+%   read geometry.pdf for detailed page layout information
+
+\usepackage{graphicx} % support the \includegraphics command and options
+
+\usepackage[titletoc,toc,title]{appendix}
+
+% \usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
+
+%%% PACKAGES
+\usepackage{booktabs} % for much better looking tables
+\usepackage{array} % for better arrays (eg matrices) in maths
+\usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
+\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
+\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
+%\usepackage{forest} % Used for creating tree diagrams
+\usepackage{color}
+\usepackage{longtable}
+\usepackage{amsmath}
+% These packages are all incorporated in the memoir class to one degree or another...
+
+%%% HEADERS & FOOTERS
+\usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
+\pagestyle{fancy} % options: empty , plain , fancy
+\renewcommand{\headrulewidth}{0pt} % customise the layout...
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+
+%%% SECTION TITLE APPEARANCE
+\usepackage{sectsty}
+%\allsectionsfont{\sffamily\mdseries\upshape} % (See the fntguide.pdf for font help)
+% (This matches ConTeXt defaults)
+
+%%% ToC (table of contents) APPEARANCE
+\usepackage[nottoc,notlof,notlot]{tocbibind} % Put the bibliography in the ToC
+\usepackage[titles,subfigure]{tocloft} % Alter the style of the Table of Contents
+\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
+
+\usepackage{listings}
+%\usepackage{minted}
+
+\newcommand{\deriv}[2]{\frac{\mathrm d #1}{\mathrm d #2}}
+\newcommand{\pderiv}[2]{\frac{\partial #1}{\partial #2}}
+
+%%% END Article customizations
+
+\hyphenation{releaseNameAddressPhoneToThirdParty}
+
+\begin{document}
+\input{title_page.tex}
+\tableofcontents
+\newpage
+
+%%% Article Summary %%%
+\section{Overview of \textit{Computational Epidemiology} as it Relates to our Project}
+An epidemic can be characterized as a widespread occurrence of an illness or other health-related event at a particular time; a pandemic is an epidemic of worldwide proportions. Due to emerging global trends of increasingly dense urbanization, more local and global travel, and a generally older population, controlling and responding to future epidemics and possibly pandemics will become significantly more challenging. However, advances in computing, big data, and computational thinking have created new opportunities to control and prevent the spread of infectious disease. Computation plays a pivotal role in supporting real-time epidemiology because using controlled experiments to understand the spread of disease is much harder to perform than computer modeling, and often experiments are impossible due to ethical constraints. 
+
+In 1760 Daniel Bernoulli developed the first mathematical model in epidemiology. Using his model, Bernoulli established that vaccination could help increase the life expectancy in the French population. Presently, the simplest and most commonly used model to demonstrate epidemic processes is the \emph{SIR} model. In this model a population of size $N$ is divided into three states: susceptible ($S$), infective ($I$), and removed or recovered ($R$). Each infected person can infect any susceptible person (independently) with probability $\beta$ and can recover with probability $\gamma$. Let $S(t)$, $I(t)$, and $R(t)$ represent the number of people that are in either the susceptible, infected, or removed states at a given time $t$. Furthermore let $s(t) = \frac{S(t)}{N}$, $i(t) = \frac{I(t)}{N}$, and $r(t) = \frac{R(t)}{N}$. (i.e. the fractions of the population in each of the states.) And it follows that: $s(t) + i(t) + r(t) = 1$. 
+
+Using the complete mixing requirement which assumes that every person is in contact with everyone in the population, the following system of differential equations describe the dynamics of the SIR model:
+
+\begin{align}
+	\deriv{s(t)}{t} &= -\beta s(t) i(t) \\
+	\deriv{i(t)}{t} &= \beta s(t) i(t) - \gamma i(t) \\
+	\deriv{r(t)}{t} &= \gamma i(t)
+\end{align}
+
+A common use for the SIR model is to determine the likelihood of an epidemic infecting a large fraction of the population. According to the SIR model, a large scale infection will occur if and only if $R_{0} = \frac{\beta}{\gamma} > 0 $, where $R_{0}$ is the \textit{reproductive number}. Public health decision making is often very concerned with controlling $R_{0}$.
+
+The SIR model makes many assumptions, the most significant of which is the complete mixing requirement which is often unrealistic. A more recent approach to understand the spread of an epidemic is \textit{networked epidemiology}. Networked epidemiology seeks to understand the interactions between three distinct components of epidemiology: individual behaviors of agents; unstructured, heterogeneous multi-scale networks; and the dynamical processes on these networks. This type of analysis is focused on the belief that a better understanding of the underlying network and individual behaviors within the network will provide better insights into contagion dynamics and response strategies. 
+
+To apply this network model, let $G(V, E)$ denote a contact graph on a population, where $V$ is the set of people in the population and $E$ is the set of contact pairs in the population (i.e. $\{u,v\}\in E~ \mathrm{iff}~u,v\in V~\mathrm{and}~u,v$ have come into contact with each other). Additionally, let $N(v)$ denote a set of neighbors of $v$. Applying the SIR model to $G$, a node is in either a $S$, $I$, or $R$ state. For each $\{u,v\}$ pair, infection can potentially spread along edge $e = \{u, v\}$ with probability of $ \beta(e,t) $ at time $t$ after $u$ becomes infected. This probability is conditional on node $v$ remaining susceptible until time $t$.~\cite{marathe} 
+
+\subsection{Technology Diffusion as an Analogue to Disease Transmission}
+It has been well studied that the adoption of new ideas, norms, behaviors, and products through an interpersonal network closely resembles the spread of infectious disease through an affected population~\cite{goel}. Due to the difficulty of finding proper examples of population contact networks and their associated disease transmission networks, we propose to use interpersonal networks and the diffusion of technology adoption on those networks as an analogue.
+
+
+%%% Project Description %%%
+\section{Project Description}
+\subsection{Graph Properties of Diffusion Networks}
+Using real technology diffusion networks we will examine a variety of graph properties including the degree distribution, transitivity, clustering, centrality, and community structure.
+
+After examining the degree distribution we hope to find that it follows a power law and that the network is scale-free, thus agreeing with existing research. Due to the scale-free nature of the graphs, we expect to observe hubs which are highly connected and have high centrality.
+
+We expect the clustering coefficients and the transitivity of the networks to be relatively low because of the way technology diffuses through a network. It is expected that the nodes that adopted the technology early on will be highly connected to other nodes. However, the peripheral nodes around the highly connected nodes will not be connected to each other and thus not form triangles because two nodes that have already adopted the technology cannot influence one another.
+
+\subsection{Diffusion on Different Graph Classes}
+In addition to the investigation outlined above we would like to investigate how the structure of a graph affects the rate and shape of the diffusion through the network. To do this we will generate random graphs according to some random graph models (e.g. Erdős–Rényi, Barbassi-Albert, etc), and simulate diffusion through the network by applying a simple SIR model to the random graph. We hope to see significant differences in the resulting transmission network on the different graph classes.
+
+\section{Sample Data Set}
+We were able to find a comprehensive data set of information diffusion from ``The Anatomy of a Scientific Rumor'' by Domenico et al.~\cite{domenico}. They tracked the information spreading process across Twitter after the announcement of the Higgs boson on July 4th, 2012.
+
+The data from the article is available at
+https://snap.stanford.edu/data/higgs-twitter.html
+
+\newpage
+\begin{thebibliography}{1}
+ \bibitem{marathe} 
+ M. Marathe and A. Vullikanti. ``Computational Epidemiology.'' \emph{Communications of the ACM}, vol. 56, no. 7, pp. 88-96, 2013.
+ \bibitem{goel} 
+ S. Goel \emph{et al}. ``The Structure of Online Diffusion Networks,'' in \emph{Proceedings of the 13th ACM Conference on Electronic Commerce}. New York, NY: ACM. 2012. pp. 623-638.
+ \bibitem{domenico}
+ D. Domenico \emph{et al}. ``The Anatomy of a Scientific Rumor.'' \emph{Scientific Reports}, vol. 3, no. 2980. Oct. 18, 2013.
+  \end{thebibliography}
+
+\end{document}
