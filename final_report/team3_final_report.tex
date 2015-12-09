@@ -62,6 +62,12 @@
 \newcommand{\deriv}[2]{\frac{\mathrm d #1}{\mathrm d #2}}
 \newcommand{\pderiv}[2]{\frac{\partial #1}{\partial #2}}
 
+\newcommand\Tstrut{\rule{0pt}{2.6ex}}       % "top" strut
+\newcommand\Bstrut{\rule[-0.9ex]{0pt}{0pt}} % "bottom" strut
+\newcommand{\TBstrut}{\Tstrut\Bstrut}
+
+\setlength{\footskip}{1.5cm}
+
 %%% END Article customizations
 
 \hyphenation{releaseNameAddressPhoneToThirdParty}
@@ -186,8 +192,74 @@ We expect the information of the Higgs boson discovery to diffuse on this networ
 
 \section{Diffusion Analysis In Terms of the Community Structure of the Contact Network}
 \subsection{Community Structure of Networks}
+In complex networks, groups of nodes which are more likely to be connected to each other than to those of other groups are called \emph{communities}. Understanding the community organization of a network provides insight into the fundamental structure of that network and can be used to predict the behaviors or actions of the nodes. One way of defining a community in a network is by identifying smaller networks, within the larger network, that have a specific structure. One type of structure that is of interest, proposed by J. Nastos and Y. Gao in 2013~\cite{nastos:2013}, is quasi-threshold graphs. Quasi-threshold graphs have been blah blah.
+
+There are a variety of equivalent definitions for quasi-threshold graphs, but the simplest is stated in terms of forbidden induced subgraphs:. A qualitative description. Each connected component will have a universal vertex ... 
+
+We are interested to see how the twitter data diffuses through the community structure of the contact network. blah blah what we expect.
+
 \subsection{Diffusion Through Communities}
+For our analysis we used a recently proposed algorithm~\cite{brandes} to edit the Higgs Twitter contact network (the network of friends and followers) to approximately the nearest quasi-threshold graph. Even though the editing athgorithm runs in polynomial time, our implementation would not scale to a network of more than about 6,000 nodes with the time and computational resources that we had. The Higgs Twitter contact network has hundreds of thousands of nodes, and many more edges, so we were not able to edit it directly. Instead, we built a section of the network by examining the series of nodes that became infected from the begining of the data, up until we had a collection of 6,000. We then built a graph using those 6,000 nodes, connecting two nodes with an egde if there was an edge in the original Higgs Twitter contact network. This resulted in a more managable section of the larger network to work with.
+
+After editing our 6,000 node network to its quasi-threshold community structure, we applied the infection (retweet, mention, reply) data to the communities in a series of 20 time steps, with time step 0 having no nodes infected, and time step 20 having all the nodes infected. Each time step was 6,632 seconds long (about 1.8 hours), which gives us a total snapshot of the diffusion that is 132,658 seconds (about 37 hours). We treated retweets, mentions, and replys all as equal infections and colored them red. The diffusion of the infection through the small network after 1 time step is shown in Figure~\ref{fig:net-time1}. A middle step of the diffusion is shown in Figure~\ref{fig:net-time11}, and the penultimate step before all the nodes are infected is show in Figure~\ref{fig:net-time19}. All the graph visualizations were produced with yEd.
+
+\begin{figure}
+\centering
+    \includegraphics[scale=0.25]{step1.png}
+    \caption{The diffusion of the infection through the identified communities after 1 time step. Infected nodes are colored in red. Communities with less than 30 nodes have been ommited for the sake of compactness.}
+    \label{fig:net-time1}
+\end{figure}
+
+\begin{figure}
+\centering
+    \includegraphics[scale=0.25]{step11.png}
+    \caption{The diffusion of the infection through the identified communities after 11 time steps.}
+    \label{fig:net-time11}
+\end{figure}
+
+\begin{figure}
+\centering
+    \includegraphics[scale=0.25]{step19.png}
+    \caption{The diffusion of the infection through the identified communities after 19 time steps.}
+    \label{fig:net-time19}
+\end{figure}
+
+From figures \ref{fig:net-time1}, \ref{fig:net-time11}, \ref{fig:net-time19} we can that nodes in each the communities become infected roughly the same rate. This is different from what we had hypothesised: the communities did not remain relatively isolated from the infection and diffuse blah blah.
+
+In Table~\ref{tbl:series} we have a visualized the 3rd largest connected component at a series of consecutive time steps. This component consists of 364 nodes and 533 edges. We found that much of the spread of the infection in this component happens in a short amount of time; for the first 8 time steps the component only has a few infected nodes, and it is between steps 9 and 11 that the majority of the infection occurs, with the remaining 9 steps slowly infecting the remainder.
+
+We noticed that between time steps 8 and 9, the root node of the community becomes infected, and the following steps are when the diffusion cascades through the rest of the nodes. This might imply that the key node for infecting the community is the root node. The other large connected components behave similarly.
+
+\begin{table}[p]
+\centering
+\vspace{-1cm}
+\begin{tabular}{| c | c |}
+	\hline
+	&\\
+   	\includegraphics[scale=0.11]{comp6.png} & \includegraphics[scale=0.11]{comp7.png} \\
+	Step 6 & Step 7 \Bstrut \\
+   	\hline
+&\\
+  	\includegraphics[scale=0.11]{comp8.png} & \includegraphics[scale=0.11]{comp9.png} \\
+	Step 8 & Step 9 \Bstrut \\
+  	\hline
+&\\
+  	\includegraphics[scale=0.11]{comp10.png} & \includegraphics[scale=0.11]{comp11.png}  \\
+	Step 10 & Step 11 \Bstrut \\
+  	\hline
+&\\
+  	\includegraphics[scale=0.11]{comp12.png} & \includegraphics[scale=0.11]{comp13.png}  \\
+	Step 12 & Step 13 \Bstrut \\
+	\hline
+\end{tabular}
+  \caption{The state of infection of the 3rd largest connected component at a series of time steps. The first 5, and the last 7 steps are not shown.}
+  \label{tbl:series}
+\end{table}
+
 \subsection{Conclusion}
+From our preliminary investigation we can see that all of the communities become infected at roughly the same rate, but it appears that the root nodes of the quasi-threshold communities are important to spreading the infection to the rest of the community. This is most likely due to the fact that the root is connected to every other node in the community and has the most influence on the other nodes. To help stop the spread of an epidemic it would be important to identify and isolate the people who are the root nodes in their communities. Or, if you want to spread something like information quickly through a community, you should release it to the person who is the root. 
+
+It is difficult to draw firm conclusions on the behaviour of diffusion through the quasi-threshold communities of the network without looking at a larger portion of the Higgs Twitter dataset. This analysis was also mostly qualitative and warrants further and more precise investigation on this data set, and other diffusion data sets. We also did not examine the effect of the time of day or the geographic locations of the users represented by each node on the rate of diffusion. These both may have an effect on the way that the infection spreads.
 
 \newpage
 \begin{thebibliography}{1}
@@ -199,6 +271,10 @@ We expect the information of the Higgs boson discovery to diffuse on this networ
  D. Domenico \emph{et al}. ``The Anatomy of a Scientific Rumor.'' \emph{Scientific Reports}, vol. 3, no. 2980. Oct. 18, 2013.
 \bibitem{snap}
 Stanford Network Analysis Project. ``Higgs Twitter Dataset,'' Accessed Nov. 2015, https://snap.stanford.edu/data/higgs-twitter.html
+\bibitem{nastos:2013}
+J. Nastos and Y. Gao, ``Familial groups in social networks,'' \emph{Soc. Networks}, vol. 35, no. 3, pp. 439-450, July 2013.
+\bibitem{brandes}
+U. Brandes \emph{et al.}, ``Fast Quasi-Threshold Editing,'' \emph{Cornell University Library,} arXiv:1504.07379, Apr. 28, 2015
  \end{thebibliography}
 
 \end{document}
