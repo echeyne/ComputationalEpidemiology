@@ -71,6 +71,8 @@
 \tableofcontents
 \newpage
 
+\section{Introduction}
+
 %%% Article Summary %%%
 \section{Overview of \textit{Computational Epidemiology} as it Relates to our Project}
 An epidemic can be characterized as a widespread occurrence of an illness or other health-related event at a particular time; a pandemic is an epidemic of worldwide proportions. Due to emerging global trends of increasingly dense urbanization, more local and global travel, and a generally older population, controlling and responding to future epidemics and possibly pandemics will become significantly more challenging. However, advances in computing, big data, and computational thinking have created new opportunities to control and prevent the spread of infectious disease. Computation plays a pivotal role in supporting real-time epidemiology because using controlled experiments to understand the spread of disease is much harder to perform than computer modeling, and often experiments are impossible due to ethical constraints. 
@@ -94,24 +96,98 @@ To apply this network model, let $G(V, E)$ denote a contact graph on a populatio
 \subsection{Technology Diffusion as an Analogue to Disease Transmission}
 It has been well studied that the adoption of new ideas, norms, behaviors, and products through an interpersonal network closely resembles the spread of infectious disease through an affected population~\cite{goel}. Due to the difficulty of finding proper examples of population contact networks and their associated disease transmission networks, we propose to use interpersonal networks and the diffusion of technology adoption on those networks as an analogue.
 
+%%% Data Analysed %%%
+\section{Data Analysed}
+We were able to find a comprehensive data set of information diffusion from ``The Anatomy of a Scientific Rumor'' by Domenico et al.~\cite{domenico}. They tracked the information spreading process across Twitter after the announcement of the the discovery of a particle displaying the properties of the Higgs boson on July 4th, 2012. The researchers made their data available through the Stanford Network Analysis Project (SNAP)~\cite{snap}, which is a repository of large network datasets. We analyzed two networks: the first being the contact network in which the information of the Higgs discovery spread, and the greater friends/followers network of all Twitter users involved in the information diffusion. The diffusion network has Twitter users as nodes, and interactions such as mentions, replies, and retweets as edges. Each edge represents a direction of infection between users. The larger contact network has users as nodes and the edges represent the relationship between the user and its direction (i.e. following, follower). It is important to note that a single interaction can incur multiple edges from a node. For instance if a user mentions another in a tweet that gets retweeted both a mention and a retweet edge will be produced going from the retweeting account to each other user respectively.
 
-%%% Project Description %%%
-\section{Project Description}
-\subsection{Graph Properties of Diffusion Networks}
-Using real technology diffusion networks we will examine a variety of graph properties including the degree distribution, transitivity, clustering, centrality, and community structure.
+\section{General Diffusion Analysis}
+\subsection{Strategy}
+The diffusion information was analyzed in intervals of 300 seconds, instead of analyzing the diffusion over each second this made computation much easier as it reduced the amount of data points from 563069 to 2016. The diffusion analysis will consist of two different datasets constructed from the original data provided by SNAP. The first being the sum of all infection events over a given time interval and the amount of infected nodes at a given time interval, and the second being the sum of all infection events with respect to mentions, replies, and retweets. The analysis will be focused on the first dataset, and it will be compared to the second. We will then compare our results of the analysis to see whether it agrees with the literature of diffusion on large networks which states that large cascades are extremely rare, and if they occur the majority of infections occur within one degree of the seed~\cite{goel}. That is, we can expect to see a large infection event occur and then the and then the infection should very quickly die off.
 
-After examining the degree distribution we hope to find that it follows a power law and that the network is scale-free, thus agreeing with existing research. Due to the scale-free nature of the graphs, we expect to observe hubs which are highly connected and have high centrality.
+\subsection{Analysis}
+The most current literature of diffusion on large networks states that the network should be inactive until a large cascade of infections occurs. This cascade will start very quickly and will die out very soon after it started. Our analysis agrees with these findings, it is then important to look at the infections prior to and after the cascade. Information on the infections per time period are given by Table~\ref{tbl:stats}, and this information is visualized in figures~\ref{fig:infection-count},~\ref{fig:newly-infected}, and~\ref{fig:overlay}.
 
-We expect the clustering coefficients and the transitivity of the networks to be relatively low because of the way technology diffuses through a network. It is expected that the nodes that adopted the technology early on will be highly connected to other nodes. However, the peripheral nodes around the highly connected nodes will not be connected to each other and thus not form triangles because two nodes that have already adopted the technology cannot influence one another.
+\begin{table}
+\centering
+\begin{tabular}{| c || c | c | c | c |}
+	\hline
+   		& Standard Dev. & Mean & Max & Variance \\
+   	\hline\hline
+  	New Infections & 544.785 & 278.301 & 4765 & 296643.668 \\
+	\hline
+\end{tabular}
+  \caption{Some general statistics of the rates of infection for each time period.}
+  \label{tbl:stats}
+\end{table}
 
-\subsection{Diffusion on Different Graph Classes}
-In addition to the investigation outlined above we would like to investigate how the structure of a graph affects the rate and shape of the diffusion through the network. To do this we will generate random graphs according to some random graph models (e.g. Erdős–Rényi, Barbassi-Albert, etc), and simulate diffusion through the network by applying a simple SIR model to the random graph. We hope to see significant differences in the resulting transmission network on the different graph classes.
+\begin{figure}
+\centering
+    \includegraphics{infection-count.png}
+    \caption{The cumulative number of infections for all the time intervals.}
+    \label{fig:infection-count}
+\end{figure}
 
-\section{Sample Data Set}
-We were able to find a comprehensive data set of information diffusion from ``The Anatomy of a Scientific Rumor'' by Domenico et al.~\cite{domenico}. They tracked the information spreading process across Twitter after the announcement of the Higgs boson on July 4th, 2012.
+\begin{figure}
+\centering
+    \includegraphics{newly-infected.png}
+    \caption{The number of new infections during each time interval.}
+    \label{fig:newly-infected}
+\end{figure}
 
-The data from the article is available at
-https://snap.stanford.edu/data/higgs-twitter.html
+If we overlay the two plots from figures~\ref{fig:infection-count} and~\ref{fig:newly-infected} (as is shown in Figure~\ref{fig:overlay}) it becomes obvious that the majority of infections happens within a very short amount of time relative to the total time of the diffusion.
+
+\begin{figure}
+\centering
+    \includegraphics{overlay.png}
+    \caption{The overlay of the two plots from figures~\ref{fig:infection-count} and~\ref{fig:newly-infected} shows the relation between number of new infections and the total number of infections at a given interval.}
+    \label{fig:overlay}
+\end{figure}
+
+Between the times 1341380272-1341430372 (time since the UNIX Epoch in seconds) 298571 infections occur out of a total 563069 infections over the lifetime of the diffusion. This 835 min (approximately 14 hour) period accounts for over 50\% of all the infections. This agrees with our predictions that the information will both start and end quickly after the initial cascade event. The growth and decay of infections is even more evident if we split our data before and after the peak infection time as is shown in Figure~\ref{fig:before-after}.
+
+\begin{figure}
+\centering
+    \includegraphics{before.png}
+      \includegraphics{after.png}
+    \caption{Display the number of new infections before and after the peak infection. This shows very well how rapidly information diffuses and then decays on large networks.}
+    \label{fig:before-after}
+\end{figure}
+
+Now that we have a general understanding of how the diffusion of the Higgs boson announcement spreads on a large network, we will now analyze the specific avenues of diffusion available (replies, mentions, and retweets) for any anomalies.
+
+\begin{table}
+\centering
+\begin{tabular}{| c || c | c | c | c |}
+	\hline
+   		& Standard Dev. & Mean & Variance &Total \\
+   	\hline\hline
+  	Replies & 32.342 & 18.305 & 1045.999 & 36902 \\
+  	\hline
+  	Mentions & 152.613 & 84.939 & 23290.67 & 171237 \\
+  	\hline
+  	Retweets & 362.454 & 176.057 & 131373.1 & 354930 \\
+	\hline
+\end{tabular}
+  \caption{Statistics of each type of diffusion observed in the SNAP Higgs boson data set.}
+  \label{tbl:type-stats}
+\end{table}
+
+\begin{figure}
+\centering
+    \includegraphics{methods.png}
+    \caption{Shows how the different means of diffusion relate to each other.}
+    \label{fig:methods}
+\end{figure}
+
+As Table~\ref{tbl:type-stats} and Figure~\ref{fig:methods} show the rate of infection of each method of diffusion, this follows closely to the aggregate diffusion data with no deviation from what we expect to see. It is interesting to note the popularity of the methods used to spread the Higgs announcement. The most popular method being the one with the least involvement (retweeting) and the most involved method of interaction (reply) is the least popular. This is most likely due to the majority of people not being motivated enough about the discovery to start a conversation but reach a minimum interest in the subject to want to spread the news.
+
+\subsection{Conclusion}
+We expect the information of the Higgs boson discovery to diffuse on this network in a similar fashion as other large networks. With little to no activity to begin with and then a large infection event that begins and decays at a very quick rate. Which would account for the majority of the infections during the lifetime of the diffusion. This is true for the infections in aggregate and the specific methods of infection observed in this network. All of these criteria are met so we can conclude that the discovery of the Higgs boson follows the expected behavior of diffusion.
+
+\section{Diffusion Analysis In Terms of the Community Structure of the Contact Network}
+\subsection{Community Structure of Networks}
+\subsection{Diffusion Through Communities}
+\subsection{Conclusion}
 
 \newpage
 \begin{thebibliography}{1}
@@ -121,6 +197,8 @@ https://snap.stanford.edu/data/higgs-twitter.html
  S. Goel \emph{et al}. ``The Structure of Online Diffusion Networks,'' in \emph{Proceedings of the 13th ACM Conference on Electronic Commerce}. New York, NY: ACM. 2012. pp. 623-638.
  \bibitem{domenico}
  D. Domenico \emph{et al}. ``The Anatomy of a Scientific Rumor.'' \emph{Scientific Reports}, vol. 3, no. 2980. Oct. 18, 2013.
-  \end{thebibliography}
+\bibitem{snap}
+Stanford Network Analysis Project. ``Higgs Twitter Dataset,'' Accessed Nov. 2015, https://snap.stanford.edu/data/higgs-twitter.html
+ \end{thebibliography}
 
 \end{document}
